@@ -21,6 +21,30 @@ function getShops() {
      request.send();
  }
 
+function getMovies (){
+let request = new XMLHttpRequest();
+     request.open('GET', "https://secret-springs-58890.herokuapp.com/api");
+     request.addEventListener('load', function () {
+         // responseText is a property of the request object
+         // (that name was chosen for us)
+         let movies = JSON.parse(request.responseText);
+         console.log(movies);
+         let parent = document.querySelector('#moviesPlus');
+ 
+         for (let i = 0; i < movies.length; i++) {
+             let element = document.createElement('li');
+             let movieCount = document.querySelector('#movies').innerHTML = "Movies" + ' ' + '(' + movies.length + ')';
+             element.textContent = movies[i].name + '--' + movies[i].genre + "--" + movies[i].rating + "stars";
+ 
+             // append to parent
+             parent.appendChild(element);
+         }
+     });
+     request.send();
+ }
+
+
+
 
 function addShop(){
     let coffeeShop = {
@@ -33,7 +57,17 @@ function addShop(){
     request.open('POST', 'http://charlotte-coffee-shops.herokuapp.com/coffee-shops');
     request.send(JSON.stringify(coffeeShop));
 }
+function addMovies(){
+    let newMovie = {
+        name: document.querySelector("#movieName").value,
+        rating: document.querySelector('#movieGenre').value,
+        price: document.querySelector('#movieRating').value,
+    }
 
+    let request = new XMLHttpRequest();
+    request.open('POST', "https://secret-springs-58890.herokuapp.com/api");
+    request.send(JSON.stringify(newMovie));
+}
 
 window.addEventListener ('load', function () {
     console.log('go time');
@@ -44,7 +78,27 @@ window.addEventListener ('load', function () {
       addShop();
      });
 
-    // let submitBtn2 = document.querySelector('addAPI2');
-    //  submitBtn.addEventListener('click', function () {
-        //  addNewStuff();
+    let submitBtn2 = document.querySelector('#addAPI2');
+     submitBtn2.addEventListener('click', function () {
+     addMovies();
      });
+
+    let coffeeChop = document.querySelector('#coffeeChops');
+     let chopBtn = document.querySelector("#cofSho");
+     chopBtn.addEventListener('click', function () {
+        if (coffeeChop.className === "hidden") {
+            coffeeChop.classList.remove("hidden");
+        } else if (coffeeChop.className === "") {
+            coffeeChop.classList.add("hidden");
+        }
+    });
+        let movieChop = document.querySelector('#movieChop');
+        let chopBtn2 = document.querySelector("#movies");
+        chopBtn2.addEventListener('click', function () {
+        if (movieChop.className === "hidden") {
+            movieChop.classList.remove("hidden");
+        } else if (movieChop.className === "") {
+            movieChop.classList.add("hidden");
+        }
+    });
+})
